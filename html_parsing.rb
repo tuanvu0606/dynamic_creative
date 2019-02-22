@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'fileutils'
    
-PAGE_URL = ARGV[0].to_s
+PAGE_URL = "index.html"
 
 IMG_URL = ARGV[1].to_s
 
@@ -25,46 +25,48 @@ puts PAGE_URL
 
 #get the image tag img
 img = page.css('img')
-img[0]["src"] = IMG_URL
+# img[0]["src"] = IMG_URL
 
-#link to css
-style = page.css('link')
-style[0]["href"] = CSS_URL
+puts img
 
-#link to the Javascript
-script  = page.css('script')
-script[1]["src"]= JAVASCRIPT_URL
+# #link to css
+# style = page.css('link')
+# style[0]["href"] = CSS_URL
 
-# Open the script file, read and store it in the last script tag
+# #link to the Javascript
+# script  = page.css('script')
+# script[1]["src"]= JAVASCRIPT_URL
 
-tracking_script = ""
+# # Open the script file, read and store it in the last script tag
 
-fi = File.open("v4_tracking.js", "r")
-fi.each_line do |line|
-	tracking_script = tracking_script + line  		
-end
-# puts tracking_script
-fi.close
+# tracking_script = ""
 
-#add the tracking script in
-V4_tracking_script = Nokogiri::XML::Node.new "script", page
-V4_tracking_script["id"] = "tracking_script"
-V4_tracking_script.content = tracking_script
-script.last.add_next_sibling(V4_tracking_script)
+# fi = File.open("v4_tracking.js", "r")
+# fi.each_line do |line|
+# 	tracking_script = tracking_script + line  		
+# end
+# # puts tracking_script
+# fi.close
 
-# script.last.add_next_sibling "<script>" + tracking_script + "</script>"
+# #add the tracking script in
+# V4_tracking_script = Nokogiri::XML::Node.new "script", page
+# V4_tracking_script["id"] = "tracking_script"
+# V4_tracking_script.content = tracking_script
+# script.last.add_next_sibling(V4_tracking_script)
 
-#puts script
+# # script.last.add_next_sibling "<script>" + tracking_script + "</script>"
 
-puts page.to_html
+# #puts script
 
-f = File.new('after_processed' + VERSION + '.html', 'w')
-f.write(page.to_html)
-f.close    
+# puts page.to_html
 
-ARGV.each do|a|
-  #puts "Argument: #{a}"
-end
+# f = File.new('after_processed' + VERSION + '.html', 'w')
+# f.write(page.to_html)
+# f.close    
+
+# ARGV.each do|a|
+#   #puts "Argument: #{a}"
+# end
 
 
 
